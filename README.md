@@ -4,6 +4,8 @@
 
 ### Студенту предоставляются следующие компоненты системы:
 
+ https://pavel1992js.github.io/js-cp-diploma-edited/
+
 - [Верстка](./sources/layout.zip)
 - [Backend](./md/backend.md)
 
