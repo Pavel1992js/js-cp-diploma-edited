@@ -1,10 +1,14 @@
 # Дипломное задание по курсу «JavaScript-программирование для начинающих»
 
+<ul dir="auto">
+<li>Ссылка на проект: <a href=" https://pavel1992js.github.io/js-cp-diploma-edited/" rel="nofollow"> https://pavel1992js.github.io/js-cp-diploma-edited//</a></li>
+<li>Технологии в проекте: HTML, CSS, Bootstrap, JavaScript, Git;</li>
+</ul>
+
 ## Создание «информационной системы для предварительного бронирования билетов».
 
 ### Студенту предоставляются следующие компоненты системы:
 
- https://pavel1992js.github.io/js-cp-diploma-edited/
 
 - [Верстка](./sources/layout.zip)
 - [Backend](./md/backend.md)
