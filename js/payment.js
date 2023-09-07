@@ -25,3 +25,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateHtmlPayment(serverResponse) {
         window.location.href = 'ticket.html';
+    }
+});
