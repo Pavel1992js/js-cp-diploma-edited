@@ -1,39 +1,27 @@
-const selectSeanse = JSON.parse(localStorage.selectSeanse);
+document.addEventListener('DOMContentLoaded', () => {
+    const ticketDetails = getJSON('ticket-details');
+    const ticketInfoWrapper = document.querySelector('.ticket__info-wrapper');
+    ticketInfoWrapper.innerHTML = '';
 
-let places = "";
-let price = 0;
+    const textHtml = `
+      <p class='ticket__info'>На фильм: <span class='ticket__details ticket__title'>${ticketDetails.filmName}</span></p>
+      <p class='ticket__info'>Ряд/Место: <span class='ticket__details ticket__chairs'>${ticketDetails.strRowPlace}</span></p>
+      <p class='ticket__info'>В зале: <span class='ticket__details ticket__hall'>${ticketDetails.hallNameNumber}</span></p>
+      <p class='ticket__info'>Начало сеанса: <span class='ticket__details ticket__start'>${ticketDetails.seanceTime} - ${ticketDetails.seanceDay}</span></p>
+      <p class='ticket__info'>Стоимость: <span class='ticket__details ticket__cost'>${ticketDetails.totalCost}</span> рублей</p>
+      <button class='acceptin-button'>Получить код бронирования</button>
+      <p class='ticket__hint'>После оплаты билет будет доступен в этом окне, а также придёт вам на почту. Покажите QR-код нашему контроллёру у входа в зал.</p>
+      <p class='ticket__hint'>Приятного просмотра!</p>
+    `;
+    ticketInfoWrapper.insertAdjacentHTML('beforeend', textHtml);
 
-for (const {
-		row, place, type
-	}
-	of selectSeanse.salesPlaces) {
-	if (places !== "") {
-		places += ", ";
-	}
-	places += `${row}/${place}`;
-	price += type === "standart" ? Number(selectSeanse.priceStandart) : Number(selectSeanse.priceVip);
-}
+    const acceptinButton = document.querySelector('.acceptin-button');
+    acceptinButton?.addEventListener('click', (event) => {
+        const hallsConfigurationObj = getJSON('pre-config-halls-paid-seats'); 
+        const hallConfiguration = hallsConfigurationObj[ticketDetails.hallId];
+        const requestBodyString = `event=sale_add&timestamp=${ticketDetails.seanceTimeStampInSec}&hallId=${ticketDetails.hallId}&seanceId=${ticketDetails.seanceId}&hallConfiguration=${hallConfiguration}`;
+        createRequest(requestBodyString, 'PAYMENT', updateHtmlPayment, true);
+    });
 
-document.querySelector(".ticket__title").innerHTML = selectSeanse.filmName;  
-document.querySelector(".ticket__chairs").innerHTML = places; 
-document.querySelector(".ticket__hall").innerHTML = selectSeanse.hallName;  
-document.querySelector(".ticket__start").innerHTML = selectSeanse.seanceTime;  
-document.querySelector(".ticket__cost").innerHTML = price;  
-
-const newHallConfig = selectSeanse.hallConfig.replace(/selected/g, "taken");
-
-console.log(selectSeanse.seanceTimeStamp);
-console.log(selectSeanse.hallId);
-console.log(selectSeanse.seanceId);
-console.log(newHallConfig);
-
-document.querySelector(".acceptin-button").addEventListener("click", (event) => {
-	event.preventDefault();
-	fetch("https://jscp-diplom.netoserver.ru/", {
-		method: "POST",
-		headers: {
-			'Content-Type' : 'application/x-www-form-urlencoded'
-		},
-		body: `event=sale_add&timestamp=${selectSeanse.seanceTimeStamp}&hallId=${selectSeanse.hallId}&seanceId=${selectSeanse.seanceId}&hallConfiguration=${newHallConfig}`,
-	});
-});
+    function updateHtmlPayment(serverResponse) {
+        window.location.href = 'ticket.html';
