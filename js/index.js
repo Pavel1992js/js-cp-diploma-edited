@@ -13,12 +13,12 @@ function updateCalendar() {
 
     const pageNavDay = document.querySelectorAll('.page-nav__day');
     let navDay = new Date()
-        navDay = Number(navDay.getDate())
+    navDay = Number(navDay.getDate())
 
     pageNavDay.forEach((element, index) => {
-    
-    element.dataset.dayTimeStamp = nextDay.setHours(0, 0, 0, 0);
- 
+
+        element.dataset.dayTimeStamp = nextDay.setHours(0, 0, 0, 0);
+
         let dayWeek = nextDay.getDay();
         let dayWeekText = nextDay.toLocaleDateString('ru-RU', options);
 
@@ -33,7 +33,7 @@ function updateCalendar() {
         } else {
             element.classList.remove('page-nav__day_weekend');
         }
-        if (navDay === navDay+index) {
+        if (navDay === navDay + index) {
             element.dataset.dayTimeStamp = nextDay.setHours(0, 0, 0, 0);
             element.classList.add('page-nav__day_today');
             element.classList.add('page-nav__day_chosen');
@@ -91,7 +91,7 @@ function updateHtmlMain(serverResponse) {
             const arrSeancesCurrentFilmAndHall = arrSeances.filter((seance, index, array) => {
                 return seance.seance_filmid === elementFilm.film_id && seance.seance_hallid === elementHall.hall_id;
             });
-            
+
             const hallNameText = `${elementHall.hall_name.slice(0, 3)} ${elementHall.hall_name.slice(3).trim()}`;
 
             if (arrSeancesCurrentFilmAndHall.length) {
@@ -114,8 +114,19 @@ function updateHtmlMain(serverResponse) {
                         const textHtml = `
                  <li class='movie-seances__time-block'><a class='movie-seances__time' href='hall.html' data-film-id=${elementFilm.film_id} data-film-name='${elementFilm.film_name}' data-hall-id=${elementHall.hall_id} data-hall-name='${hallNameText}' data-price-vip=${elementHall.hall_price_vip} data-price-standart=${elementHall.hall_price_standart} data-seance-id=${elementSeance.seance_id} data-seance-time=${elementSeance.seance_time} data-seance-start=${elementSeance.seance_start} data-seance-time-stamp=${seanceTimeStamp}>${elementSeance.seance_time}</a></li>
                `;
-                        mooviSeancesList.insertAdjacentHTML('beforeend', textHtml);
+                        // mooviSeancesList.insertAdjacentHTML('beforeend', textHtml);
                     }
+
+
+                    else {
+
+                        const textHtml = `
+                        <li class='movie-seances__time-block'>${elementSeance.seance_time}</li>
+                      `;
+                    }
+                    mooviSeancesList.insertAdjacentHTML('beforeend', textHtml);
+
+
                 });
             };
         });
